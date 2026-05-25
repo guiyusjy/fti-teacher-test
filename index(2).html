@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FTI — Future Teacher Indicator</title>
+  <style>
+    :root{
+      --bg:#F8F3E9;
+      --card:#ffffffcc;
+      --text:#1f2937;
+      --muted:#64748b;
+      --dark:#1f2937;
+      --line:#e5e7eb;
+      --cream:#fffaf0;
+      --amber:#fef3c7;
+      --green:#dcfce7;
+      --blue:#dbeafe;
+      --rose:#ffe4e6;
+      --violet:#ede9fe;
+      --orange:#ffedd5;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: Arial, "Microsoft YaHei", sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(circle at 15% 10%, rgba(252,211,77,.35), transparent 28%),
+        radial-gradient(circle at 85% 20%, rgba(167,139,250,.25), transparent 30%),
+        radial-gradient(circle at 55% 5%, rgba(110,231,183,.25), transparent 30%),
+        var(--bg);
+      min-height:100vh;
+    }
+    .page{max-width:1120px;margin:0 auto;padding:28px 18px 60px}
+    header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:12px}
+    .logo{width:48px;height:48px;border-radius:18px;background:var(--dark);color:#fde68a;display:grid;place-items:center;font-size:24px;box-shadow:0 8px 20px rgba(0,0,0,.12)}
+    .brand small{letter-spacing:.22em;color:var(--muted);font-weight:800}
+    .brand h1{font-size:20px;margin:2px 0 0}
+    .pill{background:#ffffffaa;border:1px solid #fff;border-radius:999px;padding:10px 14px;color:#475569;font-size:14px;box-shadow:0 4px 18px rgba(0,0,0,.06)}
+    .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:32px;align-items:center;min-height:70vh}
+    .card{
+      background:var(--card);
+      border:1px solid rgba(255,255,255,.75);
+      border-radius:32px;
+      box-shadow:0 18px 50px rgba(31,41,55,.10);
+      backdrop-filter: blur(10px);
+      padding:34px;
+    }
+    h2.hero{font-size:58px;line-height:1.05;margin:18px 0 18px;letter-spacing:-.05em}
+    .lead{font-size:18px;line-height:1.8;color:#475569;max-width:650px}
+    .tagrow{display:flex;flex-wrap:wrap;gap:10px;margin:24px 0}
+    .tag{background:#fff;border-radius:999px;padding:10px 14px;color:#475569;box-shadow:0 3px 14px rgba(0,0,0,.05);font-size:14px}
+    button{
+      border:0;border-radius:18px;background:var(--dark);color:#fff;
+      padding:15px 22px;font-weight:800;font-size:15px;cursor:pointer;
+      transition:.18s transform,.18s box-shadow,.18s background;
+    }
+    button:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(0,0,0,.12);background:#111827}
+    button.secondary{background:#fff;color:#1f2937;border:1px solid var(--line)}
+    .file{background:var(--cream);border-radius:26px;padding:22px;color:#475569;line-height:1.8}
+    .quote{background:#fff;border-radius:24px;padding:18px;margin-top:20px;color:#475569}
+    .progress-wrap{margin:12px 0 20px}
+    .progress-text{display:flex;justify-content:space-between;color:#64748b;font-size:13px;margin-bottom:8px}
+    .progress{height:9px;background:#fde68a;border-radius:999px;overflow:hidden}
+    .bar{height:100%;background:#1f2937;width:0%;transition:.35s}
+    .question-head{display:flex;justify-content:space-between;gap:22px;align-items:flex-start}
+    .eyebrow{color:#b45309;letter-spacing:.2em;font-size:13px;font-weight:900;margin:0 0 10px}
+    .qtitle{font-size:38px;line-height:1.15;margin:0}
+    .illus{min-width:145px;background:var(--cream);border-radius:28px;padding:16px;text-align:center;box-shadow:0 4px 16px rgba(0,0,0,.04)}
+    .illus .icon{width:68px;height:68px;margin:auto;border-radius:24px;display:grid;place-items:center;font-size:34px;background:var(--amber)}
+    .illus .note{font-size:12px;color:#64748b;font-weight:800;margin-top:8px}
+    .bodytext{font-size:18px;line-height:1.85;color:#475569;margin:24px 0}
+    .askbox{background:#f8fafc;border-radius:28px;padding:22px}
+    .askbox h3{margin:0 0 14px}
+    .option{
+      width:100%;text-align:left;background:#fff;color:#334155;border:1px solid #e5e7eb;border-radius:20px;
+      padding:16px 18px;margin:10px 0;line-height:1.6;font-size:16px;box-shadow:0 2px 10px rgba(0,0,0,.03)
+    }
+    .letter{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:#fef3c7;font-weight:900;color:#334155;margin-right:10px}
+    .result{text-align:center}
+    .bigemoji{width:120px;height:120px;margin:18px auto 8px;border-radius:34px;background:var(--cream);display:grid;place-items:center;font-size:68px;box-shadow:0 8px 24px rgba(0,0,0,.06)}
+    .result h2{font-size:56px;line-height:1.08;margin:12px 0 8px;letter-spacing:-.04em}
+    .sub{color:#64748b;font-size:18px}
+    .result-grid{display:grid;grid-template-columns:.92fr 1.08fr;gap:24px;margin-top:32px;text-align:left}
+    .traitbox{background:var(--cream);border-radius:28px;padding:24px}
+    .traits{display:flex;flex-wrap:wrap;gap:8px}
+    .traits span{background:#fff;border-radius:999px;padding:9px 12px;font-size:14px;color:#475569}
+    .say{background:#fff;border-radius:22px;padding:18px;margin-top:18px;color:#475569}
+    .desc{font-size:18px;line-height:1.85;color:#475569}
+    .two{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px}
+    .mini{border-radius:24px;padding:18px;line-height:1.8;color:#475569}
+    .mini.good{background:var(--green)}
+    .mini.risk{background:var(--rose)}
+    .darkquote{background:#1f2937;color:#fff;border-radius:28px;padding:22px;margin-top:24px;text-align:center;font-size:18px;font-weight:800;line-height:1.7}
+    .actions{margin-top:24px;background:#f8fafc;border-radius:26px;padding:18px;display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .library-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:24px}
+    .typecard{background:#fff;border:1px solid #e5e7eb;border-radius:26px;padding:18px;display:flex;gap:14px}
+    .typecard.current{background:var(--cream);border-color:#1f2937}
+    .typeemoji{width:58px;height:58px;border-radius:20px;background:#f8fafc;display:grid;place-items:center;font-size:30px;flex:0 0 auto}
+    .typecard h3{margin:0;font-size:21px}
+    .typecard p{margin:7px 0 0;color:#64748b;line-height:1.55;font-size:14px}
+    .hidden-badge{display:inline-block;background:#fef3c7;color:#92400e;padding:8px 13px;border-radius:999px;margin-top:12px;font-weight:800;font-size:13px}
+    .share{font-size:14px;color:#475569}
+    .copybox{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:12px 14px;word-break:break-word}
+    @media(max-width:800px){
+      .grid,.result-grid,.two,.library-grid{grid-template-columns:1fr}
+      h2.hero{font-size:42px}
+      .qtitle,.result h2{font-size:34px}
+      .question-head{flex-direction:column}
+      header{align-items:flex-start;gap:12px;flex-direction:column}
+      .card{padding:24px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <header>
+      <div class="brand">
+        <div class="logo">🎓</div>
+        <div><small>FTI</small><h1>Future Teacher Indicator</h1></div>
+      </div>
+      <div class="pill">📖 CET-4 Reading Simulation</div>
+    </header>
+
+    <main id="app"></main>
+  </div>
+
+<script>
+const TYPES = {
+  Mushroom: {
+    emoji:"🍄", title:"The Mushroom Teacher", subtitle:"Mushroom Type", zh:"菌子型",
+    words:["Thoughtful","Creative","Deep","Quietly warm"],
+    desc:"You may seem distant at first, but behind your calm appearance is a rich inner world. Your lessons are not only about knowledge. They may become stories, questions, memories, or small discoveries about life.",
+    students:"Learning with you felt like entering another world.",
+    strengths:["Creative thinking","Strong responsibility","Sensitive observation","Rich knowledge"],
+    risks:["Easily lost in ideas","May forget time","Overthinking"],
+    quote:"Teaching is also about noticing the small beauty in life."
+  },
+  Apple: {
+    emoji:"🍎", title:"The Apple Teacher", subtitle:"Apple Type", zh:"平果型",
+    words:["Relaxed","Warm","Open","Life-loving"],
+    desc:"You make the classroom feel human. Students may not fear you, but they trust you. You bring jokes, stories, travel, hobbies, and ordinary life into teaching.",
+    students:"That teacher made growing up feel less scary.",
+    strengths:["Easy-going","Emotionally stable","Open-minded","Close to students"],
+    risks:["Too relaxed sometimes","Weak classroom control","May avoid strict discipline"],
+    quote:"Work matters, but life matters too."
+  },
+  Flame: {
+    emoji:"🔥", title:"The Flame Teacher", subtitle:"Flame Type", zh:"火苗型",
+    words:["Sharp","Real","Fast","Dry humor"],
+    desc:"You dislike pretending. You speak directly and see through many things. Your honesty may sound sharp, but students often remember it because it feels true.",
+    students:"I thought you were harsh. Later I understood.",
+    strengths:["Honest feedback","High efficiency","Clear judgement","Strong sense of reality"],
+    risks:["Easily misunderstood","May seem distant","Low patience for empty tasks"],
+    quote:"Not everything needs passion. But everything needs honesty."
+  },
+  Baby: {
+    emoji:"👶", title:"The Baby Teacher", subtitle:"Baby Type", zh:"宝宝型",
+    words:["Playful","Strict-but-soft","Honest","Protective"],
+    desc:"You criticize, complain, and joke, but students rarely doubt your care. Your strictness feels safe because there is warmth behind it.",
+    students:"She looked annoyed, but somehow I knew she cared.",
+    strengths:["Honest feedback","Close relationships","Warm classroom atmosphere","Clear correction"],
+    risks:["Emotional involvement","Unclear boundaries","May complain too much"],
+    quote:"I’m saying this because I care."
+  },
+  Hat: {
+    emoji:"🎩", title:"The Hat Teacher", subtitle:"Hat Type", zh:"帽子型",
+    words:["Passionate","Responsible","Growing","Guiding"],
+    desc:"Teaching becomes part of who you are. Years pass, but you still learn, still care, and still try. Your energy gives students direction.",
+    students:"You made me believe education matters.",
+    strengths:["Passion","Responsibility","Problem-solving","Lifelong learning"],
+    risks:["Burnout risk","Taking on too much","Hard to rest"],
+    quote:"Growing older should never mean stopping growth."
+  },
+  Lightning: {
+    emoji:"⚡", title:"The Lightning Teacher", subtitle:"Lightning Type", zh:"闪电型",
+    words:["Strict","Fast","Orderly","Result-focused"],
+    desc:"You value standards and push people forward. Students may feel pressure, but they often improve because your expectations are clear and powerful.",
+    students:"She interrupted my answer. I still remember her.",
+    strengths:["Leadership","Efficiency","Clear rules","Strong execution"],
+    risks:["May ignore feelings","Creates pressure","Interrupts process for results"],
+    quote:"Tell me the result."
+  },
+  Meatball: {
+    emoji:"🌟", title:"The Meatball Teacher", subtitle:"Meatball Type · Hidden Result", zh:"丸子型",
+    words:["Young","Idealistic","Fresh","Energetic"],
+    desc:"You still believe enthusiasm can change things. You bring new ideas, fresh energy, and a little dramatic honesty into the classroom.",
+    students:"She felt like a new page in the department.",
+    strengths:["Fresh thinking","Strong motivation","Willing to try","Modern style"],
+    risks:["Reality may hurt","Emotion can show quickly","Needs experience"],
+    quote:"Protect your passion. Not everyone keeps it."
+  },
+  ChickenStrip: {
+    emoji:"🍗", title:"The Chicken Strip Teacher", subtitle:"Chicken Strip Type · Hidden Result", zh:"鸡柳型",
+    words:["Low-energy","Harmless","Calm","Floating"],
+    desc:"You understand an uncomfortable truth: people cannot burn forever. Sometimes survival becomes a teaching skill. Sometimes it becomes escape.",
+    students:"She was there, but also somehow not there.",
+    strengths:["Low pressure","Emotionally harmless","Calm presence","Accepting"],
+    risks:["Low involvement","Weak influence","May disappear after class"],
+    quote:"Saving energy is also a way to survive."
+  }
+};
+
+const illustrations = [
+  {emoji:"✏️", note:"Trial lesson day", color:"var(--amber)"},
+  {emoji:"💬", note:"A quiet voice", color:"var(--green)"},
+  {emoji:"📄", note:"Revision again", color:"var(--blue)"},
+  {emoji:"👥", note:"Parent communication", color:"var(--rose)"},
+  {emoji:"☕", note:"After work", color:"var(--orange)"},
+  {emoji:"⏳", note:"Ten years later", color:"var(--violet)"}
+];
+
+const QUESTIONS = [
+  {
+    eyebrow:"Part 1", title:"Your First Trial Lesson",
+    body:[
+      "Tomorrow will be your first trial lesson. You have prepared for several nights. You want your students to enjoy English instead of simply memorizing words.",
+      "But when class begins, something unexpected happens. Several students are whispering. One student keeps drawing. Another looks sleepy.",
+      "You suddenly realize: teaching is not only about knowledge. It is also about people. Twenty pairs of eyes are waiting for your reaction."
+    ],
+    ask:"What would you do first?",
+    options:[
+      {text:"Stop the class and explain classroom rules before continuing.", score:{Lightning:3,Hat:1}},
+      {text:"Keep teaching and hope an interesting lesson will attract attention.", score:{Mushroom:3,Apple:1}},
+      {text:"Walk closer to distracted students and involve them with easy questions.", score:{Baby:3,Hat:1}},
+      {text:"Smile and joke: “This is my first lesson too. Let’s survive together.”", score:{Apple:3,Flame:1}},
+      {text:"Stay calm and adjust your pace.", score:{Flame:3,ChickenStrip:1}}
+    ]
+  },
+  {
+    eyebrow:"Part 2", title:"The Quiet Student",
+    body:[
+      "After several weeks, you notice a student. She never raises her hand. Her homework is fine, but she rarely speaks.",
+      "Your mentor asks, “Should teachers encourage every student to speak, or respect silence?”",
+      "The next day, you decide to make your choice carefully."
+    ],
+    ask:"What do you do?",
+    options:[
+      {text:"Call on her directly and give her a chance to answer.", score:{Lightning:3}},
+      {text:"Wait patiently and build trust first.", score:{Mushroom:3}},
+      {text:"Talk with her after class.", score:{Baby:3}},
+      {text:"Use group activities to reduce pressure.", score:{Hat:3}},
+      {text:"Accept that not everyone likes speaking.", score:{Flame:2,ChickenStrip:2}}
+    ]
+  },
+  {
+    eyebrow:"Part 3", title:"Rewrite Your Lesson Plan",
+    body:[
+      "Your lesson plan was rejected. Again. Your mentor says, “Still not practical. Rewrite it.” This is the third time.",
+      "You feel tired. You begin to wonder, “Is teaching really what I imagined?”",
+      "You open your computer for another revision."
+    ],
+    ask:"What is your first thought?",
+    options:[
+      {text:"I’ll improve until it works.", score:{Hat:3,Meatball:1}},
+      {text:"I want to understand why my ideas failed.", score:{Mushroom:3}},
+      {text:"I’ll finish it, but I won’t overthink.", score:{Flame:3,ChickenStrip:1}},
+      {text:"Standards matter. Good teaching needs strict preparation.", score:{Lightning:3}},
+      {text:"I need to complain to someone first, then continue.", score:{Apple:3,Baby:1}}
+    ]
+  },
+  {
+    eyebrow:"Part 4", title:"A Parent Questions You",
+    body:[
+      "A parent sends you a message: “My child says your class feels stressful.”",
+      "You read it several times. You feel nervous, and also a little unfairly judged.",
+      "You need to reply like a beginning teacher who is still learning how to communicate."
+    ],
+    ask:"How do you respond?",
+    options:[
+      {text:"Explain your teaching methods clearly and provide reasons.", score:{Lightning:3,Hat:1}},
+      {text:"Ask more about the student’s feelings first.", score:{Mushroom:3,Baby:1}},
+      {text:"Arrange communication and work together on a solution.", score:{Hat:3}},
+      {text:"Reply politely, but do not let it affect you too much.", score:{Flame:3,ChickenStrip:1}},
+      {text:"Reduce the tension with warmth and gentle humor.", score:{Apple:3}}
+    ]
+  },
+  {
+    eyebrow:"Part 5", title:"Years Later",
+    body:[
+      "Three years pass. Teaching becomes lesson plans, meetings, homework, parents, and many small responsibilities.",
+      "One evening, you sit alone after work and ask yourself, “Why did I want to become a teacher?”",
+      "Outside, students are laughing on the playground."
+    ],
+    ask:"Which answer feels closest to you?",
+    options:[
+      {text:"Education changes people.", score:{Hat:3}},
+      {text:"I enjoy sharing ideas.", score:{Mushroom:3}},
+      {text:"Work matters, but life matters too.", score:{Apple:3}},
+      {text:"Honestly, I’m not as passionate anymore.", score:{Flame:3,ChickenStrip:2}, flag:"lowPassion"},
+      {text:"Students’ growth still matters to me.", score:{Baby:3}}
+    ]
+  },
+  {
+    eyebrow:"Final Part", title:"Ten Years Later",
+    body:[
+      "Ten years later, a former student sends you a message: “Teacher, I still remember something you once said.”",
+      "You stop for a moment. Teaching leaves traces in people, even when teachers forget.",
+      "The message makes you wonder what kind of teacher you have become."
+    ],
+    ask:"What do you hope students remember about you?",
+    options:[
+      {text:"You opened a new world for me.", score:{Mushroom:4}},
+      {text:"You made adulthood feel less frightening.", score:{Apple:4}},
+      {text:"You were sharp, but honest.", score:{Flame:4}},
+      {text:"You cared about me.", score:{Baby:4}},
+      {text:"You truly loved education.", score:{Hat:4}},
+      {text:"You pushed me to improve.", score:{Lightning:4}}
+    ]
+  }
+];
+
+let step = 0;
+let answers = [];
+let resultKey = null;
+let resultHidden = false;
+
+function scoreBase(){
+  return {Mushroom:0,Apple:0,Flame:0,Baby:0,Hat:0,Lightning:0,Meatball:0,ChickenStrip:0};
+}
+function getResult(){
+  const scores = scoreBase();
+  const flags = {};
+  answers.forEach(a=>{
+    Object.entries(a.score).forEach(([k,v])=>scores[k]+=v);
+    if(a.flag) flags[a.flag]=true;
+  });
+  if(scores.Flame>=6 && scores.Apple<=3 && flags.lowPassion){
+    return {key:"ChickenStrip", hidden:true, scores};
+  }
+  if(scores.Hat>=6 && scores.Apple>=5 && scores.Hat < Math.max(scores.Mushroom,scores.Apple,scores.Flame,scores.Baby,scores.Lightning)){
+    return {key:"Meatball", hidden:true, scores};
+  }
+  const keys=["Mushroom","Apple","Flame","Baby","Hat","Lightning"];
+  keys.sort((a,b)=>scores[b]-scores[a]);
+  return {key:keys[0], hidden:false, scores};
+}
+function app(){return document.getElementById("app");}
+function start(){
+  step=0; answers=[]; resultKey=null; resultHidden=false; renderQuestion();
+}
+function restart(){ renderIntro(); }
+function choose(i){
+  answers.push(QUESTIONS[step].options[i]);
+  step++;
+  if(step>=QUESTIONS.length) renderResult();
+  else renderQuestion();
+}
+function renderIntro(){
+  app().innerHTML = `
+  <section class="grid">
+    <div>
+      <div class="pill">✨ A soft but serious test for future teachers</div>
+      <h2 class="hero">Which teacher will you become?</h2>
+      <p class="lead">You are a student majoring in Primary English Education. From trial lessons to real classrooms, every choice may shape your future teacher type.</p>
+      <div class="tagrow">
+        <span class="tag">Task-based reading</span>
+        <span class="tag">Teacher personality</span>
+        <span class="tag">Hidden results</span>
+        <span class="tag">Education major edition</span>
+      </div>
+      <button onclick="start()">Start Simulation →</button>
+    </div>
+    <div class="card">
+      <h2>📋 Simulation File</h2>
+      <p class="sub">Department of Education · Practice Record</p>
+      <div class="file">
+        <p><b>Identity:</b> A future English teacher</p>
+        <p><b>Mission:</b> Make choices in six teaching situations</p>
+        <p><b>Result:</b> Mushroom, Apple, Flame, Baby, Hat, Lightning, and hidden types</p>
+      </div>
+      <div class="quote">“Teaching leaves traces in people, even when teachers forget.”</div>
+    </div>
+  </section>`;
+}
+function renderQuestion(){
+  const q = QUESTIONS[step];
+  const ill = illustrations[step];
+  const pct = Math.round((step / QUESTIONS.length)*100);
+  app().innerHTML = `
+    <section class="card">
+      <div class="progress-wrap">
+        <div class="progress-text"><span>Simulation progress</span><span>${pct}%</span></div>
+        <div class="progress"><div class="bar" style="width:${pct}%"></div></div>
+      </div>
+      <div class="question-head">
+        <div>
+          <p class="eyebrow">${q.eyebrow}</p>
+          <h2 class="qtitle">${q.title}</h2>
+        </div>
+        <div class="illus">
+          <div class="icon" style="background:${ill.color}">${ill.emoji}</div>
+          <div class="note">${ill.note}</div>
+        </div>
+      </div>
+      <div class="bodytext">${q.body.map(p=>`<p>${p}</p>`).join("")}</div>
+      <div class="askbox">
+        <h3>${q.ask}</h3>
+        ${q.options.map((o,i)=>`<button class="option" onclick="choose(${i})"><span class="letter">${String.fromCharCode(65+i)}</span>${o.text}</button>`).join("")}
+      </div>
+    </section>`;
+}
+function renderResult(){
+  const r = getResult();
+  resultKey = r.key;
+  resultHidden = r.hidden;
+  const t = TYPES[r.key];
+  app().innerHTML = `
+    <section class="card result">
+      <p class="eyebrow">SIMULATION COMPLETED</p>
+      <div class="bigemoji">${t.emoji}</div>
+      <h2>${t.title}</h2>
+      <p class="sub">${t.subtitle} · ${t.zh}</p>
+      ${r.hidden ? `<div class="hidden-badge">Hidden result unlocked</div>` : ""}
+      <div class="result-grid">
+        <div class="traitbox">
+          <h3>Core traits</h3>
+          <div class="traits">${t.words.map(w=>`<span>${w}</span>`).join("")}</div>
+          <div class="say"><b>Students may say:</b><br>“${t.students}”</div>
+        </div>
+        <div>
+          <p class="desc">${t.desc}</p>
+          <div class="two">
+            <div class="mini good"><b>Strengths</b><br>${t.strengths.map(x=>"✓ "+x).join("<br>")}</div>
+            <div class="mini risk"><b>Possible risks</b><br>${t.risks.map(x=>"△ "+x).join("<br>")}</div>
+          </div>
+        </div>
+      </div>
+      <div class="darkquote">“${t.quote}”</div>
+      <div class="actions">
+        <div class="share">I took the FTI — Future Teacher Indicator. My result is <b>${t.title}</b>. What kind of teacher will you become?</div>
+        <div>
+          <button onclick="renderAllTypes()">View All Types</button>
+          <button class="secondary" onclick="restart()">Try Again</button>
+        </div>
+      </div>
+    </section>`;
+}
+function renderAllTypes(){
+  app().innerHTML = `
+    <section class="card">
+      <p class="eyebrow">FTI TYPE LIBRARY</p>
+      <h2 class="qtitle">All Teacher Types</h2>
+      <p class="lead">Browse all possible FTI results. Some types are hidden results that appear only under special choice patterns.</p>
+      <div class="library-grid">
+        ${Object.entries(TYPES).map(([k,t])=>`
+          <div class="typecard ${k===resultKey?"current":""}">
+            <div class="typeemoji">${t.emoji}</div>
+            <div>
+              <h3>${t.title}</h3>
+              <p>${t.subtitle} · ${t.zh}</p>
+              <p>${t.desc}</p>
+              <div class="traits" style="margin-top:10px">${t.words.map(w=>`<span>${w}</span>`).join("")}</div>
+              ${k===resultKey?`<div class="hidden-badge">Your result</div>`:""}
+            </div>
+          </div>`).join("")}
+      </div>
+      <div class="actions">
+        <button onclick="renderResult()">Back to My Result</button>
+        <button class="secondary" onclick="restart()">Try Again</button>
+      </div>
+    </section>`;
+}
+renderIntro();
+</script>
+</body>
+</html>
